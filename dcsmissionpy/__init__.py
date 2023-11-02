@@ -5,8 +5,10 @@ import winreg
 
 from dcsmissionpy.mission import Mission
 
+
 class DCSWorldNotInstalledError(Exception):
     pass
+
 
 _MISSION_TYPES = (
     "Single",
@@ -28,12 +30,14 @@ def _get_dcs_path():
     except FileNotFoundError:
         raise DCSWorldNotInstalledError()
 
+
 def is_dcs_installed():
     try:
         _get_dcs_path()
         return True
     except DCSWorldNotInstalledError:
         return False
+
 
 def get_installed_aircraft():
     path = os.path.join(_get_dcs_path(), rf"Mods\aircraft")
