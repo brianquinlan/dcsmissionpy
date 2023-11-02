@@ -37,12 +37,18 @@ class MissionTests(unittest.TestCase):
             assert image.startswith(b"\x89PNG")
 
 
+@pytest.mark.skipif(
+    not dcsmissionpy.is_dcs_installed(), reason="DCS World not installed"
+)
 def test_get_installed_aircraft():
     installed_aircraft = set(dcsmissionpy.get_installed_aircraft())
     assert "Su-25T" in installed_aircraft
     assert "TF-51D" in installed_aircraft
 
 
+@pytest.mark.skipif(
+    not dcsmissionpy.is_dcs_installed(), reason="DCS World not installed"
+)
 def test_get_installed_missions():
     for mission in dcsmissionpy.get_installed_missions("Su-25T"):
         mission.sortie

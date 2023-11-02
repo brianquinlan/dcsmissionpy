@@ -49,11 +49,3 @@ def unit(session):
     session.install("-e", ".[dev]")
     session.install("pytest")
     _run_tests(session)
-
-
-@nox.session
-def type_check(session):
-    """Run type checking using mypy."""
-    session.install("-e", ".[dev]")
-    session.install("mypy")
-    session.run("mypy", "pybadges")
