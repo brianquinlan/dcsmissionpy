@@ -16,6 +16,7 @@ _MISSION_TYPES = (
 
 @functools.cache
 def _get_dcs_path():
+    # TODO: Support the non-beta version.
     with winreg.OpenKeyEx(
         winreg.HKEY_CURRENT_USER, r"SOFTWARE\\Eagle Dynamics\\DCS World OpenBeta"
     ) as dcs_key:
