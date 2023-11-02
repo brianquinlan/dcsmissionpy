@@ -5,6 +5,9 @@ import winreg
 
 from dcsmissionpy.mission import Mission
 
+class DCSWorldNotInstalledError(Exception):
+    pass
+
 _MISSION_TYPES = (
     "Single",
     "Training",
@@ -16,12 +19,21 @@ _MISSION_TYPES = (
 
 @functools.cache
 def _get_dcs_path():
-    # TODO: Support the non-beta version.
-    with winreg.OpenKeyEx(
-        winreg.HKEY_CURRENT_USER, r"SOFTWARE\\Eagle Dynamics\\DCS World OpenBeta"
-    ) as dcs_key:
-        return winreg.QueryValueEx(dcs_key, "Path")[0]
+    try:
+        # TODO: Support the non-beta version.
+        with winreg.OpenKeyEx(
+            winreg.HKEY_CURRENT_USER, r"SOFTWARE\\Eagle Dynamics\\DCS World OpenBeta"
+        ) as dcs_key:
+            return winreg.QueryValueEx(dcs_key, "Path")[0]
+    except FileNotFoundError:
+        raise DCSWorldNotInstalledError()
 
+def is_dcs_installed():
+    try:
+        _get_dcs_path()
+        return True
+    except DCSWorldNotInstalledError:
+        return False
 
 def get_installed_aircraft():
     path = os.path.join(_get_dcs_path(), rf"Mods\aircraft")
